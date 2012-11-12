@@ -4,12 +4,12 @@
 
 Summary:	Evolution data server
 Name:		evolution-data-server
-Version:	3.6.1
+Version:	3.6.2
 Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/3.6/%{name}-%{version}.tar.xz
-# Source0-md5:	8c87771a808f4e8e590ad647a9a79771
+# Source0-md5:	80daab03dbdb535296151a762e433a7e
 URL:		http://www.ximian.com/products/ximian_evolution/
 BuildRequires:	autoconf
 BuildRequires:	automake
