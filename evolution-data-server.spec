@@ -1,15 +1,15 @@
-%define		basever		3.6
+%define		basever		3.8
 %define		apiver		1.2
 %define		apiver3		3.0
 
 Summary:	Evolution data server
 Name:		evolution-data-server
-Version:	3.6.4
+Version:	3.8.0
 Release:	1
 License:	GPL
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/3.6/%{name}-%{version}.tar.xz
-# Source0-md5:	9a66998e1986a003c42222f41ea15d2e
+Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/%{basever}/%{name}-%{version}.tar.xz
+# Source0-md5:	f7ae20b7a7d0ec966ab4a53d76c0660c
 URL:		http://www.ximian.com/products/ximian_evolution/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -65,11 +65,14 @@ e-d-s API documentation.
 %prep
 %setup -q
 # kill gnome common deps
-sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
+%{__sed} -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
     -i -e 's/GNOME_MAINTAINER_MODE_DEFINES//g'	\
     -i -e 's/GNOME_COMMON_INIT//g'		\
     -i -e 's/GNOME_CXX_WARNINGS.*//g'		\
-    -i -e 's/GNOME_DEBUG_CHECK//g' configure.ac
+    -i -e 's/GNOME_DEBUG_CHECK//g' 		\
+    -i -e '/GNOME_CODE_COVERAGE/d' configure.ac
+%{__sed} -i -e '/@GNOME_CODE_COVERAGE_RULES@/d' Makefile.am tests/Makefile.am
+%{__sed} -i -e 's/services tests docs/services docs/' Makefile.am
 
 %build
 %{__gtkdocize}
@@ -81,12 +84,13 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 %{__autoconf}
 %{__automake}
 %configure \
-	--disable-silent-rules				\
-	--disable-static				\
-	--enable-vala-bindings				\
-	--with-html-dir=%{_gtkdocdir}			\
-	--with-krb5=no					\
-	--with-libdb=%{_libdir}				\
+	--disable-silent-rules		\
+	--disable-static		\
+	--disable-uoa			\
+	--enable-vala-bindings		\
+	--with-html-dir=%{_gtkdocdir}	\
+	--with-krb5=no			\
+	--with-libdb=%{_libdir}		\
 	--with-openldap=yes
 %{__make}
 
@@ -132,42 +136,38 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libexecdir}/evolution-addressbook-factory
 %attr(755,root,root) %{_libexecdir}/evolution-calendar-factory
 %attr(755,root,root) %{_libexecdir}/evolution-source-registry
+%attr(755,root,root) %{_libexecdir}/evolution-user-prompter
 %attr(755,root,root) %{_libexecdir}/registry-modules/*.so
 %{_libdir}/%{name}/camel-providers/*.urls
-
 %{_datadir}/dbus-1/services/org.gnome.evolution.dataserver.AddressBook.service
 %{_datadir}/dbus-1/services/org.gnome.evolution.dataserver.Calendar.service
 %{_datadir}/dbus-1/services/org.gnome.evolution.dataserver.Sources.service
-
-%dir %{_datadir}/%{name}-%{basever}
-%{_datadir}/%{name}-%{basever}/ro-sources
-%{_datadir}/%{name}-%{basever}/rw-sources
-%{_pixmapsdir}/%{name}
-
-%{_datadir}/GConf/gsettings/*.convert
+%{_datadir}/dbus-1/services/org.gnome.evolution.dataserver.UserPrompter.service
 %{_datadir}/glib-2.0/schemas/*.xml
+%{_pixmapsdir}/%{name}
 
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %ghost %{_libdir}/libcamel-%{apiver}.so.??
 %attr(755,root,root) %ghost %{_libdir}/libebackend-%{apiver}.so.?
 %attr(755,root,root) %ghost %{_libdir}/libebook-%{apiver}.so.??
+%attr(755,root,root) %ghost %{_libdir}/libebook-contacts-%{apiver}.so.?
 %attr(755,root,root) %ghost %{_libdir}/libecal-%{apiver}.so.??
 %attr(755,root,root) %ghost %{_libdir}/libedata-book-%{apiver}.so.??
 %attr(755,root,root) %ghost %{_libdir}/libedata-cal-%{apiver}.so.??
 %attr(755,root,root) %ghost %{_libdir}/libedataserver-%{apiver}.so.??
-%attr(755,root,root) %ghost %{_libdir}/libedataserverui-%{apiver3}.so.?
 %attr(755,root,root) %{_libdir}/libcamel-%{apiver}.so.*.*.*
 %attr(755,root,root) %{_libdir}/libebackend-%{apiver}.so.*.*.*
 %attr(755,root,root) %{_libdir}/libebook-%{apiver}.so.*.*.*
+%attr(755,root,root) %{_libdir}/libebook-contacts-%{apiver}.so
+%attr(755,root,root) %{_libdir}/libebook-contacts-%{apiver}.so.*.*.*
 %attr(755,root,root) %{_libdir}/libecal-%{apiver}.so.*.*.*
 %attr(755,root,root) %{_libdir}/libedata-book-%{apiver}.so.*.*.*
 %attr(755,root,root) %{_libdir}/libedata-cal-%{apiver}.so.*.*.*
 %attr(755,root,root) %{_libdir}/libedataserver-%{apiver}.so.*.*.*
-%attr(755,root,root) %{_libdir}/libedataserverui-%{apiver3}.so.*.*.*
-%{_libdir}/girepository-1.0/EBook-1.2.typelib
-%{_libdir}/girepository-1.0/ECalendar-1.2.typelib
-%{_libdir}/girepository-1.0/EDataServer-1.2.typelib
+%{_libdir}/girepository-1.0/EBook-%{apiver}.typelib
+%{_libdir}/girepository-1.0/EBookContacts-%{apiver}.typelib
+%{_libdir}/girepository-1.0/EDataServer-%{apiver}.typelib
 
 %files devel
 %defattr(644,root,root,755)
@@ -178,16 +178,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libedata-book-%{apiver}.so
 %attr(755,root,root) %{_libdir}/libedata-cal-%{apiver}.so
 %attr(755,root,root) %{_libdir}/libedataserver-%{apiver}.so
-%attr(755,root,root) %{_libdir}/libedataserverui-%{apiver3}.so
-%{_includedir}/evolution-data-server-%{basever}
+%{_includedir}/evolution-data-server
 %{_pkgconfigdir}/*.pc
 %{_datadir}/gir-1.0/EBook-1.2.gir
-%{_datadir}/gir-1.0/ECalendar-1.2.gir
+%{_datadir}/gir-1.0/EBookContacts-1.2.gir
 %{_datadir}/gir-1.0/EDataServer-1.2.gir
 %{_datadir}/vala/vapi/libebook-1.2.deps
 %{_datadir}/vala/vapi/libebook-1.2.vapi
-%{_datadir}/vala/vapi/libecalendar-1.2.deps
-%{_datadir}/vala/vapi/libecalendar-1.2.vapi
+%{_datadir}/vala/vapi/libebook-contacts-1.2.deps
+%{_datadir}/vala/vapi/libebook-contacts-1.2.vapi
+%{_datadir}/vala/vapi/libedataserver-1.2.deps
 %{_datadir}/vala/vapi/libedataserver-1.2.vapi
 
 %files apidocs
@@ -195,9 +195,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_gtkdocdir}/camel
 %{_gtkdocdir}/libebackend
 %{_gtkdocdir}/libebook
+%{_gtkdocdir}/libebook-contacts
 %{_gtkdocdir}/libecal
 %{_gtkdocdir}/libedata-book
 %{_gtkdocdir}/libedata-cal
 %{_gtkdocdir}/libedataserver
-%{_gtkdocdir}/libedataserverui
 
