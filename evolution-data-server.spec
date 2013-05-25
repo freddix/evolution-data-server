@@ -4,12 +4,12 @@
 
 Summary:	Evolution data server
 Name:		evolution-data-server
-Version:	3.8.0
+Version:	3.8.2
 Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	f7ae20b7a7d0ec966ab4a53d76c0660c
+# Source0-md5:	98db2eab116488c600e47a0b282856a0
 URL:		http://www.ximian.com/products/ximian_evolution/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -29,7 +29,6 @@ BuildRequires:	nss-devel
 BuildRequires:	openldap-devel
 BuildRequires:	pkg-config
 BuildRequires:	vala
-Requires(post,postun):	rarian
 Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -110,12 +109,6 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
-%post
-%scrollkeeper_update_post
-
-%postun
-%scrollkeeper_update_postun
 
 %post	libs -p /usr/sbin/ldconfig
 %postun	libs -p /usr/sbin/ldconfig
