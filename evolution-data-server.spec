@@ -4,12 +4,12 @@
 
 Summary:	Evolution data server
 Name:		evolution-data-server
-Version:	3.8.4
+Version:	3.8.5
 Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	49ce0f209a4d293099fb1c17001f7290
+# Source0-md5:	dcbdf50e0bc060ae0215bec52c0c22f7
 URL:		http://www.ximian.com/products/ximian_evolution/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -25,7 +25,7 @@ BuildRequires:	libsoup-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	nspr-devel
-BuildRequires:	nss-devel
+BuildRequires:	nss-devel >= 1:3.15.1
 BuildRequires:	openldap-devel
 BuildRequires:	pkg-config
 BuildRequires:	vala
