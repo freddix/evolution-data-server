@@ -1,34 +1,34 @@
-%define		basever		3.8
+%define		basever		3.10
 %define		apiver		1.2
 %define		apiver3		3.0
 
 Summary:	Evolution data server
 Name:		evolution-data-server
-Version:	3.8.5
+Version:	3.10.0
 Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	dcbdf50e0bc060ae0215bec52c0c22f7
+# Source0-md5:	51e841e328add1950839c3d5b24db85f
 URL:		http://www.ximian.com/products/ximian_evolution/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	db-devel
-BuildRequires:	gnome-online-accounts-devel
+BuildRequires:	gnome-online-accounts-devel >= 3.10.0
 BuildRequires:	intltool
-BuildRequires:	libgdata-devel
-BuildRequires:	libgnome-keyring-devel
-BuildRequires:	libgweather-devel
+BuildRequires:	libgdata-devel >= 0.14.0
+BuildRequires:	libgnome-keyring-devel >= 3.10.0
+BuildRequires:	libgweather-devel >= 3.10.0
 BuildRequires:	libical-devel
-BuildRequires:	libsoup-devel
+BuildRequires:	libsoup-devel >= 2.44.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	nspr-devel
-BuildRequires:	nss-devel >= 1:3.15.1
+BuildRequires:	nss-devel
 BuildRequires:	openldap-devel
 BuildRequires:	pkg-config
-BuildRequires:	vala
+BuildRequires:	vala-vapigen >= 0.22.0
 Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
