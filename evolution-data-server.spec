@@ -1,34 +1,35 @@
-%define		basever		3.10
+%define		basever		3.12
 %define		apiver		1.2
 %define		apiver3		3.0
 
 Summary:	Evolution data server
 Name:		evolution-data-server
-Version:	3.10.4
+Version:	3.12.0
 Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	62b365fa50f13a0be85eec67115742c8
+# Source0-md5:	a2e5b9dbf1ee8f879a7a7f162e5ea88c
 URL:		http://www.ximian.com/products/ximian_evolution/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	db-devel
-BuildRequires:	gnome-online-accounts-devel >= 3.10.0
+BuildRequires:	gnome-online-accounts-devel >= 3.12.0
 BuildRequires:	intltool
+BuildRequires:	krb5-devel
 BuildRequires:	libgdata-devel >= 0.14.0
-BuildRequires:	libgnome-keyring-devel >= 3.10.0
-BuildRequires:	libgweather-devel >= 3.10.0
+BuildRequires:	libgnome-keyring-devel >= 3.12.0
+BuildRequires:	libgweather-devel >= 3.12.0
 BuildRequires:	libical-devel
-BuildRequires:	libsoup-devel >= 2.44.0
+BuildRequires:	libsoup-devel >= 2.46.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	nspr-devel
 BuildRequires:	nss-devel
 BuildRequires:	openldap-devel
 BuildRequires:	pkg-config
-BuildRequires:	vala-vapigen >= 0.22.0
+BuildRequires:	vala-vapigen >= 0.24.0
 Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -70,7 +71,7 @@ e-d-s API documentation.
     -i -e 's/GNOME_CXX_WARNINGS.*//g'		\
     -i -e 's/GNOME_DEBUG_CHECK//g' 		\
     -i -e '/GNOME_CODE_COVERAGE/d' configure.ac
-%{__sed} -i -e '/@GNOME_CODE_COVERAGE_RULES@/d' Makefile.am tests/Makefile.am
+find . -name Makefile.am -print | xargs sed -i -e '/@GNOME_CODE_COVERAGE_RULES@/d'
 %{__sed} -i -e 's/services tests docs/services docs/' Makefile.am
 
 %build
@@ -88,7 +89,7 @@ e-d-s API documentation.
 	--disable-uoa			\
 	--enable-vala-bindings		\
 	--with-html-dir=%{_gtkdocdir}	\
-	--with-krb5=no			\
+	--with-krb5=%{_prefix}		\
 	--with-libdb=%{_libdir}		\
 	--with-openldap=yes
 %{__make}
@@ -186,11 +187,5 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/camel
-%{_gtkdocdir}/libebackend
-%{_gtkdocdir}/libebook
-%{_gtkdocdir}/libebook-contacts
-%{_gtkdocdir}/libecal
-%{_gtkdocdir}/libedata-book
-%{_gtkdocdir}/libedata-cal
-%{_gtkdocdir}/libedataserver
+%{_gtkdocdir}/eds
 
