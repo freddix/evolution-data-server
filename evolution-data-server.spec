@@ -5,7 +5,7 @@
 Summary:	Evolution data server
 Name:		evolution-data-server
 Version:	3.12.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/%{basever}/%{name}-%{version}.tar.xz
@@ -96,15 +96,18 @@ find . -name Makefile.am -print | xargs sed -i -e '/@GNOME_CODE_COVERAGE_RULES@/
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT		\
 	HTML_DIR=%{_gtkdocdir}		\
 	pkgconfigdir=%{_pkgconfigdir}
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
-rm -f $RPM_BUILD_ROOT%{_libexecdir}/*/*.la
-rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libexecdir}/*/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libexecdir}/evolution-scan-gconf-tree-xml
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/GConf
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 
 %find_lang %{name} --all-name
 
@@ -122,6 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libexecdir}/calendar-backends
 %dir %{_libexecdir}/camel-providers
 %dir %{_libexecdir}/registry-modules
+%dir %{_datadir}/%{name}
 %attr(755,root,root) %{_libexecdir}/addressbook-backends/*.so
 %attr(755,root,root) %{_libexecdir}/calendar-backends/*.so
 %attr(755,root,root) %{_libexecdir}/camel-index-control-%{apiver}
