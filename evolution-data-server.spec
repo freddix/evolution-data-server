@@ -5,7 +5,7 @@
 Summary:	Evolution data server
 Name:		evolution-data-server
 Version:	3.12.6
-Release:	1
+Release:	2
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/%{basever}/%{name}-%{version}.tar.xz
@@ -18,7 +18,7 @@ BuildRequires:	db-devel
 BuildRequires:	gnome-online-accounts-devel >= 3.12.0
 BuildRequires:	intltool
 BuildRequires:	krb5-devel
-BuildRequires:	libgdata-devel >= 0.14.0
+BuildRequires:	libgdata-devel >= 0.16.0
 BuildRequires:	libgnome-keyring-devel >= 3.12.0
 BuildRequires:	libgweather-devel >= 3.12.0
 BuildRequires:	libical-devel
@@ -31,6 +31,7 @@ BuildRequires:	openldap-devel
 BuildRequires:	pkg-config
 BuildRequires:	vala-vapigen >= 0.24.0
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	libgdata >= 0.16.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_libexecdir	%{_libdir}/%{name}
